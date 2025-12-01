@@ -45,6 +45,7 @@ class ChirpPolicy
      */
     public function delete(User $user, Chirp $chirp): bool
     {
+        // Checks weather the logged in user is the owner of the chirp
         return $chirp->user()->is($user);
     }
 
