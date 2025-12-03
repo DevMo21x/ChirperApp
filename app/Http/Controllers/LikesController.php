@@ -9,59 +9,26 @@ use App\Models\Chirp;
 class LikesController extends Controller
 {
     use AuthorizesRequests;
+
     /**
-     * Display a listing of the resource.
+     * Store a newly created resource in storage (Like a chirp).
      */
-    public function index()
+    public function store(Request $request, Chirp $chirp)
     {
-        //
+        if (!$chirp->isLikedBy(auth()->user())) {
+            $chirp->likes()->create(['user_id' => auth()->id()]);
+        }
+
+        return back();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Remove the specified resource from storage (Unlike a chirp).
      */
-    public function create()
+    public function destroy(Request $request, Chirp $chirp)
     {
-        //
-    }
+        $chirp->likes()->where('user_id', auth()->id())->delete();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request ,Chirp $chirp)
-    {
-        $this->authorize('update', $chirp);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return back();
     }
 }

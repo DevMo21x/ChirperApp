@@ -13,8 +13,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/chirps/{chirp}/edit', [ChirpController::class, 'edit']);
     Route::put('/chirps/{chirp}', [ChirpController::class, 'update']);
     Route::delete('/chirps/{chirp}', [ChirpController::class, 'destroy']);
-    Route::post('/chirps/{chirp}/like', [LikesController::class, 'update']);
-    Route::delete('/chirps/{chirp}/like', [LikesController::class, 'delete']);
+    Route::post('/chirps/{chirp}/like', [LikesController::class, 'store'])->name('chirps.like');
+    Route::delete('/chirps/{chirp}/like', [LikesController::class, 'destroy'])->name('chirps.unlike');
 });
 
 
