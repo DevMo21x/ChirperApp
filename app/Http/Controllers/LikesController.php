@@ -19,6 +19,14 @@ class LikesController extends Controller
             $chirp->likes()->create(['user_id' => auth()->id()]);
         }
 
+        // Return JSON for AJAX requests
+        if ($request->ajax()) {
+            return response()->json([
+                'liked' => true,
+                'count' => $chirp->likes()->count()
+            ]);
+        }
+
         return back();
     }
 
@@ -28,6 +36,14 @@ class LikesController extends Controller
     public function destroy(Request $request, Chirp $chirp)
     {
         $chirp->likes()->where('user_id', auth()->id())->delete();
+
+        // Return JSON for AJAX requests
+        if ($request->ajax()) {
+            return response()->json([
+                'liked' => false,
+                'count' => $chirp->likes()->count()
+            ]);
+        }
 
         return back();
     }

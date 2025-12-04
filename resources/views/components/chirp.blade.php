@@ -42,28 +42,20 @@
                         </div>
                     @endcan
 
-
-
-                    <div>
-                        @auth {{-- Check ths user is authenticated or not before proceeding --}}
-                            @if ($chirp->isLikedBy(auth()->user()))
-                                <form method="POST" action="{{ route('chirps.unlike', $chirp) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-ghost btn-xs">Unlike</button>
-                                </form>
-                            @else
-                                <form method="POST" action="{{ route('chirps.like', $chirp) }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-ghost btn-xs like-btn">Like</button>
-                                </form>
-                            @endif
+                    {{-- Like/Unlike with AJAX --}}
+                    <div class="like-container" data-chirp-id="{{ $chirp->id }}">
+                        @auth
+                            <button type="button" class="btn btn-ghost btn-xs like-btn"
+                                data-liked="{{ $chirp->isLikedBy(auth()->user()) ? 'true' : 'false' }}">
+                                {{ $chirp->isLikedBy(auth()->user()) ? 'Unlike' : 'Like' }}
+                            </button>
                         @endauth
-                        <span>{{ $chirp->likes->count() }} Likes</span>
+                        <span class="like-count">{{ $chirp->likes->count() }} Likes</span>
                     </div>
 
                 </div>
-                <p class="mt-1">{{ $chirp->message }}</p>
+
+                <p class="mt-2 text-base">{{ $chirp->message }}</p>
             </div>
         </div>
     </div>
