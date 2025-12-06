@@ -24,6 +24,7 @@ class Chirp extends Model
 
     public function isLikedBy(User $user): bool
     {
+        // Check if authenticated user has liked this chirp or not: bool
         return $this->likes()->where('user_id', $user->id)->exists();
     }
 }

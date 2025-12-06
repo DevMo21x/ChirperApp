@@ -15,6 +15,7 @@ class LikesController extends Controller
      */
     public function store(Request $request, Chirp $chirp)
     {
+        // Create a new like only if user didn't already like it
         if (!$chirp->isLikedBy(auth()->user())) {
             $chirp->likes()->create(['user_id' => auth()->id()]);
         }
@@ -27,7 +28,7 @@ class LikesController extends Controller
             ]);
         }
 
-        return back();
+        return back(); // goes back to the pervious page
     }
 
     /**

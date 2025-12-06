@@ -1,6 +1,47 @@
 import "./bootstrap";
 
-// AJAX Like/Unlike functionality
+// THEME TOGGLE FUNCTIONALITY
+document.addEventListener("DOMContentLoaded", function () {
+    const themeToggle = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("sun-icon");
+    const moonIcon = document.getElementById("moon-icon");
+    const html = document.documentElement;
+
+    // Get saved theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("theme") || "laravelChirper";
+    html.setAttribute("data-theme", savedTheme);
+    updateIcons(savedTheme);
+
+    // Toggle theme when button is clicked
+    if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+            const currentTheme = html.getAttribute("data-theme");
+            const newTheme =
+                currentTheme === "laravelChirper" ? "dark" : "laravelChirper";
+
+            html.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateIcons(newTheme);
+        });
+    }
+
+    // Update icons based on current theme
+    function updateIcons(theme) {
+        if (sunIcon && moonIcon) {
+            if (theme === "dark") {
+                sunIcon.classList.remove("hidden");
+                moonIcon.classList.add("hidden");
+            } else {
+                sunIcon.classList.add("hidden");
+                moonIcon.classList.remove("hidden");
+            }
+        }
+    }
+});
+
+// ==========================================
+// AJAX LIKE/UNLIKE FUNCTIONALITY
+// ==========================================
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".like-btn").forEach((button) => {
         button.addEventListener("click", async function () {
