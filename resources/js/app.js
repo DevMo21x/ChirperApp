@@ -1,8 +1,7 @@
 import "./bootstrap";
 
-// ==========================================
+
 // THEME TOGGLE FUNCTIONALITY
-// ==========================================
 document.addEventListener("DOMContentLoaded", function () {
     const themeToggle = document.getElementById("theme-toggle");
     const sunIcon = document.getElementById("sun-icon");
@@ -37,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// ==========================================
+
 // AJAX LIKE/UNLIKE FUNCTIONALITY
-// ==========================================
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".like-btn").forEach((button) => {
         button.addEventListener("click", async function () {
@@ -76,8 +75,30 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
                 }
 
-                // Update like count
-                container.querySelector(".like-count").textContent = data.count;
+                // Update like text
+                const likeText = this.querySelector(".like-text");
+                if (likeText) {
+                    likeText.textContent = data.liked ? "Liked" : "Like";
+                }
+
+                // Update like count - Search globally for containers with this chirp ID
+                const chirpContainers = document.querySelectorAll(
+                    `.like-container[data-chirp-id="${chirpId}"]`
+                );
+
+                chirpContainers.forEach((container) => {
+                    const countSpan = container.querySelector(".like-count");
+                    if (countSpan) {
+                        const likeWord = data.count === 1 ? "like" : "likes";
+                        countSpan.innerHTML = `
+                            <svg class="w-3 h-3" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            ${data.count} ${likeWord}
+                        `;
+                    }
+                });
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -85,27 +106,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// ==========================================
-// NEW: AJAX BOOKMARK FUNCTIONALITY
-// ==========================================
+
+// AJAX BOOKMARK FUNCTIONALITY
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Find all bookmark buttons on the page
     document.querySelectorAll(".bookmark-btn").forEach((button) => {
-        // When a bookmark button is clicked...
         button.addEventListener("click", async function () {
-            // Get the container and chirp ID
             const container = this.closest(".bookmark-container");
             const chirpId = container.dataset.chirpId;
-
-            // Check if already bookmarked
             const isBookmarked = this.dataset.bookmarked === "true";
 
-            // Set URL and method based on current state
             const url = `/chirps/${chirpId}/bookmark`;
             const method = isBookmarked ? "DELETE" : "POST";
 
             try {
-                // Send AJAX request to server
                 const response = await fetch(url, {
                     method: method,
                     headers: {
@@ -116,6 +130,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         "X-Requested-With": "XMLHttpRequest",
                     },
                 });
+
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
 
                 const data = await response.json();
 

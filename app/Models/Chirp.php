@@ -28,7 +28,7 @@ class Chirp extends Model
         return $this->likes()->where('user_id', $user->id)->exists();
     }
 
-    public function bookmark(): HasMany
+    public function bookmarks(): HasMany
     {
         return $this->hasMany(Bookmark::class);
     }
