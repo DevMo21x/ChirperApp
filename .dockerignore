@@ -1,0 +1,34 @@
+# Ignore .env files (for sensitive data)
+.env
+.env.*
+
+# Ignore node_modules directory
+/node_modules
+
+# Ignore composer vendor directory
+/vendor
+
+# Ignore IDE/editor specific files
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Laravel specific cache and logs
+/storage/*
+!/storage/app
+!/storage/public
+!/storage/logs
+
+# Ignore build and temporary files
+/.phpunit.result.cache
+/tests
+/.docker
+/.git
+/.gitignore
+/.env.docker
+
