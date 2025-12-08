@@ -47,8 +47,22 @@ class User extends Authenticatable
         ];
     }
 
-    public function chirps(): HasMany 
+    public function chirps(): HasMany
     {
         return $this->hasMany(Chirp::class);
+    }
+
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+
+    public function bookmarkedChirps()
+    {
+        return Chirp::whereHas('bookmarks', function ($query) {
+            $query->where('user_id', $this->id);
+        });
     }
 }

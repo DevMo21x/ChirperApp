@@ -14,7 +14,7 @@ class ChirpController extends Controller
      */
     public function index()
     {
-        $chirps = Chirp::with('user', 'likes')->latest()->take(50)->get();
+        $chirps = Chirp::with('user', 'likes', 'bookmarks')->latest()->take(50)->get();
 
         return view('home', ['chirps' => $chirps]);
     }
@@ -31,45 +31,45 @@ class ChirpController extends Controller
      * Store a newly created resource in storage.
      */
 
-    
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'message' => 'required|string|max:255',
-    ]);
 
-    // Use the authenticated user
-    auth()->user()->chirps()->create($validated);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
 
-    return redirect('/')->with('success', 'Your chirp has been posted!');
-}
+        // Use the authenticated user
+        auth()->user()->chirps()->create($validated);
 
-public function edit(Chirp $chirp)
-{
-    $this->authorize('update', $chirp);
+        return redirect('/')->with('success', 'Your chirp has been posted!');
+    }
 
-    return view('chirps.edit', compact('chirp'));
-}
+    public function edit(Chirp $chirp)
+    {
+        $this->authorize('update', $chirp);
 
-public function update(Request $request, Chirp $chirp)
-{
-    $this->authorize('update', $chirp);
+        return view('chirps.edit', compact('chirp'));
+    }
 
-    $validated = $request->validate([
-        'message' => 'required|string|max:255',
-    ]);
+    public function update(Request $request, Chirp $chirp)
+    {
+        $this->authorize('update', $chirp);
 
-    $chirp->update($validated);
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
 
-    return redirect('/')->with('success', 'Chirp updated!');
-}
+        $chirp->update($validated);
 
-public function destroy(Chirp $chirp)
-{
-    $this->authorize('delete', $chirp);
+        return redirect('/')->with('success', 'Chirp updated!');
+    }
 
-    $chirp->delete();
+    public function destroy(Chirp $chirp)
+    {
+        $this->authorize('delete', $chirp);
 
-    return redirect('/')->with('success', 'Chirp deleted!');
-}
+        $chirp->delete();
+
+        return redirect('/')->with('success', 'Chirp deleted!');
+    }
 }

@@ -27,4 +27,14 @@ class Chirp extends Model
         // Check if authenticated user has liked this chirp or not: bool
         return $this->likes()->where('user_id', $user->id)->exists();
     }
+
+    public function bookmark(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function isBookmarkedBy(User $user): bool 
+    {
+        return $this->bookmarks()->where('user_id', $user->id)->exists();
+    }
 }
