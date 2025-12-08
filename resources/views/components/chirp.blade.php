@@ -22,7 +22,14 @@
             <div class="min-w-0 flex-1">
                 <div class="flex justify-between w-full">
                     <div class="flex items-center gap-1">
-                        <span class="text-sm font-semibold">{{ $chirp->user ? $chirp->user->name : 'Anonymous' }}</span>
+                        @if ($chirp->user)
+                            <a href="{{ route('users.show', $chirp->user) }}"
+                                class="text-sm font-semibold hover:underline">
+                                {{ $chirp->user->name }}
+                            </a>
+                        @else
+                            <span class="text-sm font-semibold">Anonymous</span>
+                        @endif
                         <span class="text-base-content/60">·</span>
                         <span class="text-sm text-base-content/60">{{ $chirp->created_at->diffForHumans() }}</span>
                         @if ($chirp->updated_at->gt($chirp->created_at->addSeconds(5)))
@@ -91,7 +98,7 @@
 
                 <p class="mt-2 text-base">{{ $chirp->message }}</p>
 
-                {{-- Like Count at bottom right --}}
+                {{-- Like Count --}}
                 <div class="flex justify-end mt-2 like-container" data-chirp-id="{{ $chirp->id }}">
                     <span class="like-count text-sm text-base-content/60 flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
