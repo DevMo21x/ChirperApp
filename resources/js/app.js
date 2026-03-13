@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const data = await response.json();
 
-                // Update button state
+
                 this.dataset.bookmarked = data.bookmarked ? "true" : "false";
 
                 // Update bookmark icon fill

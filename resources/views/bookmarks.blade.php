@@ -1,6 +1,4 @@
 
-{{-- filepath: resources/views/bookmarks.blade.php --}}
-
 <x-layout>
     <x-slot:title>
         My Bookmarks
